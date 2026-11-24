@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marcio Luis Tennis - Controle de Aulas & Check-in</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; background-color: #f4f7f5; color: #111827; }
+    .lime-accent { background-color: #84cc16; }
+    .lime-text { color: #65a30d; }
+    .card-shadow { box-shadow: 0 4px 20px -2px rgba(16, 24, 40, 0.06); }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- Cabeçalho Principal -->
+  <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-3">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALEAAAB1CAYAAAABUABnAAAV0ElEQVR42u2dfXBU5b3HP5bIS5ZoSFI3JWKSCq4kgIGqAW9AI9ZLSZ3QcZ0iEYJCB51CRm6wrbl2XHtrbCe+zBVKvb1ihIJXqg6JCKWdCWhgbCC8BCExIdGgQtjwkhA2u8tuktn7B551z9lzzp5NNpCX5ztzJvNsnvOcZ8/5nt/ze35ve53P5/MhIDCI8T1xCwQEiQUEBIkFBASJBQSJBQQEiQUEBIkFBASJBQSJBQQGM6LELeh/dOPCyQW68XCJMwBcxmvo3NGMZBQxRHE9Jm7CxPfFDRUk7h9coImzfEUndi5Qz3kO08FJzlMX8WuNAmJII55pmJnGWG4hgVsYzzRGceOwu/fXidiJ8ODkHGep5ys+w8EXfM0/OE8dPuA6BdGuBjzf/vX5JTfczHwSmEE8t/NDMhnL94c0uQWJDUjYFo7TxD9o5TMu8imXAwg7aoDOO5Dco4EUFmJmGilkDTmJLUgc9PA7+JKD1PM+LVTioM5PiFGD/rt99z0SuJdpLOZW7iWeiYLEgx0dfMMJKjlAMeeoG/BSNpKkliR1Bs8xjYe5iduIIlqQeLDottX8jSbe4xSfcN0wIK1RQqezmh+xZNAQeliRuBsXn/NPjvAWLWzHM8yJG0rtSCCNNB5jGo8MaJVjWJD4Ak18ynpqeU0Qt5eETuJeZrGadHIFia8mPqeCQ7xKEzuHvboQCVz+Vt3IpJgZPMaNTBAk7k+VoZL/5Bx1jBbc6zfpPI0nyWQF48kQJI4UDrCB3SwXKsNVJnMqDzGbZ0hltiCxIO/gVjUSuYd/5w9XncyDmsS1lLOdBYK8A4zMP+QhHuB3V03NGJQkbmYvFfyW03wiyDuAVY10lpHNb/rdPDeoSOyhg538hs94Q5B3EOnMmTzHPP5LkPgAG/g7y0GoDoOSzKOAhyjrFzvzgCfxBZrYxnJO8Ykwlw0BfXki8/kJ/x1RFWNAk/hj/sQnrBSSdwhK5jkUk82zQ5fETs7xVxbQyqeCwEOYyAmk8Qh/4ybShxaJaynnfRYI8g4jFeM+1nEfvxz8JO7Gxd95jsO8NqAI7NH5n3jRInePk7iXR/hrr+IxBgSJPXTwJvdwnrprlpsG+IOEYrmHWG5hFLGMIYHRJAad30UbnbTQQxfn+ZyLfOqXLIHjCbKHhxy2MZUFg4vEzexlE3P69UEHpuXEkMaNpGBmJuOZRjRxxJES0YisDr6hjZO4aOMcp7Czjwt8NqRSnfpTvbiDJ3mIVwwH5F9TEh9gAztZHnHTWWBQt5lZJDCd2/g3TMRf0/BBJ+fo4DSnOMTX/ItW/uVP6ReklhP53jCsF9eMxLv4LVX8PiIEDkytmcgyksnmNuZgIn5Ap9dIRVVOUMlX7KGJDf5M6uFKag9gYSEL+b+BrU68y6M08G6fHlTgspzBc1h48JqFAkZavTrONn8WynCS0tIGbzkfD1yduBsXbzO/T4E7kgszndVM4WdDgrh6hD7ERprYMOQj9TxciUtewocD1zrRFwtEYPD1j1jGRO4bVuWaPHTwGR9xlP8dku53D2DmHh5nZ6+e61UhcTcu/oe7wiZwYBTUXeQP+iIfkUALNVTyR+p5d8jozjGksZxPey2Y+p3EvZHA0tJ5P28yg0cHXTGPq4EOvqGS14ZEBvdqLvZpZe1XEodLYMmffjdF3EWeYKoBODnHXl5nP78flJvAVZztc7nafiXxn0g3RODLwPdJYw4vhu2tEbiCCzSxhz9wnA2DRmd+iq8jYrfvNxJvJocv2KlLYGkZnMtmIXkjqDNvI29AlyvwACtpjNgep19I/D7LqWWDJoEl8mZGMKZUQI5qtlDBYwNOX440gfuFxHt4iUqKdAmczjJ+zPMDpoLMUIWHDv7JCxzitQEjlX9OZcRt+xElcTVb2MFjqjdMkgj98SUE9PE5FZTzwDWVyh5gST89+4j+epKdQ7KS/4Ebt0ye4zf4BIGvASYzl9VcxMJCWajo1cJlwEpZvz37iEribly8iMn/tksms5+x5ZrX6xL4brXcyWNXNW7b2k9Zzv0iiaOI5l7Wcfnbt+8efscvqRUEHkC4izye4jgxpOlmrUSKwD/hzX4vBxvxjZ3kYp7PG0J1GOCbvq0sppnt/SKVI5E7d81ILDC4sJ3/iLj1ItygdkFigT5Dqq4UCYns+VaN/DG/vWrzFyQWACJTKsFD/9ddEyQW0EUze9nInF6pFh6uVI7/GX++6vMWJBaQ4Sy1vMWUsAmczjKsvHlN5vw98dgEAnET6SzhSFgETuWha0ZgQWIBVYwng59TGdK7JxF4Ee9e0/kKdUJAE59TwVYe0IyFSSCNFVRf88wbIYkFNDGZueSwWdWzN1AILEgsEBJ3kcc9/C6IyMv5dMDkPgp1QsAQAgveRCIvTpB4AKO7u5uoqKghec0/kc5SPh5QBO4zid955x1qa2uvKPoeDytXriQlJUX3nPb2dl5++WV/e9y4caxZs8bwNV944QW8Xi8ej4eFCxdy5513Gjqvrq6Ot956i1Gj9H1Sd999Nw8++CBjxowxPKfdu3dTUVHB0aNHaWpqYurUqUyZMoWcnJyQ8zt58iTr1q3zz2vSpEksXbrU0PcpLy/n8OHDHDt2jPHjxzNjxgzmz5/P/fffP7wkh68PyMnJ8XGllp8P8NlstpDnFBUVyc6xWq2Gr1dRUSE7t7i42PC5H3zwgexcvSMpKclXX18fcsz6+npfdna27lgFBQVhfadQ99DhcPjy8/N1rzlv3jyfw+HwDRf0icQZGRlBN1APtbW1Qf2Liop6/dJkZGQYPre4uNgwiaXDbrdrjldVVWV4HD0il5aWyvpu2bJFs6/dbvclJSUZumZGRobP4/EMCxL3yTpx7tw51aVVCytWrAj6bNy4cYaudfDgQXbs2CH7rKamhs7OTkPnNzQ0yNo5OTmyIyMjI+ic119/XXWs1tZWZs6cKfvMbDaTn59PQUEBFoslaJyDBw+qjqWc/6233qr5HWbNmsXp06dln+Xl5VFYWEhWVlbQvfnLX/4i1Ak92O12VQmQl5en2r+srEy1/wcffGDoelarVfX8ioqKXknxrq6uoD4lJSWyPllZWapjFRQUBH1nl8vl/39XV1fQfLVWnMLCQlm/2tpaQ+pQRkaGr7m5WXf+2dnZQp0IpQ8aXYYdDofPZDKp9q2uru7TtYyqI1lZWbLzAkknweVyyeaptiS7XK6gOagt28o5a70QSp1aSUyt+avp7A6HI0jdGA66ca9JXF1drUms0tJSWV+bzabZV+uhBUK5kQmUcmazOeT5bW1tsodrsVhUiacksRrxlN+7sLBQ9ZpdXV2+6upqX1VVla+qqkrzZTXyQrS1tRnee8ybN2/YkbjXOrFSNwvEpk2bZLqozWbT7BvKlHXy5Ek2btzobxcVFfHoo4/K9NPW1lbdMTo6OmTznTp1KiNHjgzqt23bNpxOp789Y8aMoD5ff/21rD1linrYYlRUFHfeeSeZmZlkZmYaMgWazWbVeZ05c0bWLigo0BzD6B5hKKHXFvJvvvlG83979uyhoaEBi8VCYWFh0IOSSJeamorJZNK9zrp162TtX/ziF3g8cidobW0tZrPZ8NxNJhMNDQ309PT4PysvL6eoqCjkRvTYsWOy9uTJk3t985WEmzRpkmo/h8NhqJ/b7ZZtti0Wi+pLMdTQa0l88uRJWXvt2rWy9vbt29m/f7/MoqCUICkpKYwdO1bzGq2trbzyyiuynXhKSgq33HKLrN/OnTt15/rll1/K2hs3buT2228nPT3dfygJbLPZSEtLCxqrubk56Dv0FkqprmWZ+OKLL2TtuLg41X6XLl3i1KlT/nZqaqogsR7Onz8fZOoJlIYvv/wyubm5Mun34osvypb++Ph43Wu88cYbsvbTTz/tV0GsVqv/8/3794dFllAoLS3l+eefN/S9Q60kerDb7bK2lsrR2NhoiOxut1umDqWnpzMc0GsSB5LRZDJhMplk7mOlrlpRURGkR48fP153/EBdWunCDdRX9+3bF7Qy6OmUZrOZpKQkkpKSVCWtltu3u7ubjo4O2TgjRozo9c1Xqgla98Oo9He5XLJ2KCExrEnc2dkpcx5Mnz6dkSNHsnjxYtX+eXl5ZGZmBpFYS7cDeO+992TtJ554ArfbTWdnJ263O2ipP3r0qOZYFy5ckLU/+ugjGhsbOXbsWJBjQql6BOLy5cuy7xAbG9unm6/cV2iNFyhdAU0VoaamRtZOTk4WJNaC0+mUSQdpeTObzbJlXoKk1yqXdTWdE8Dr9bJq1SrZZ0uWLCE6OpqYmBiio6PJy5MX5d67d6/mfL/66itZOyEhgTFjxjBu3DhWrlwp+9+f/6ydrdvV1cXZs2dln2lJ4t27d1NeXu4/3G53SDUhMTFRU00IxPXXX6/a7/Dhw7K2mhdSeOw0vHWBsQHKgJa1a9f6/7d27VrZ/6qqqgzFE2AwVkDNC+fxeHwWi0UW3NPW1ub/f3Nzc9BYWsE/Snuzlh1WaUs26ujQsukqvX9qtnWlLdlsNg+bIKDvRWIZDJQgs2bNoqCgwH88+eSTmpJHbfn0er1B0tEIampqgtQGabxA1Sc1NVUWr5GSkkJOTo7snHffVU98HDduXJB0U9rAGxoauO+++2SfaYWatrS0yNpalhqlLXrx4sUy81x7ezsPP/ywrM9TTz2la/kZ9pJY6cfXi7zSc50GSkStsW02m8/hcPja2tpkh8PhCIpMU4vDcDgcIUM/1eI61KS61iphsVh8Vqs1yFsG+HJyclTH8Xg8Mu+gnudRLfrPbDb7cnJygmJC9O6tcDvrBJpoqQWhXKyhlv5QD0MZDqkW8qgkgFoftXgIvcAkNbKqHRaLRTVGQ02N0SK7Ede98tAKIhIk1glsN3rTAs8xmUwhpXCogHK1SLpQUjZQR9eLTEtNTdW8bldXV8jA9MLCQt14XuXLpRWDoSc8lIfVatWNgR6q6JXbOT09neLiYn/7Bz/4Qchz3G43RUVFfj1N7ZxLly75x/V6veTn5+uOaTabKSkpoaury2/6c7vdsniMxMREbDYbI0eOxOv1aqburF69mri4OL/5yuv10traqurOjoqK4u233+ZXv/oV5eXlNDQ04HQ6SU5OJiUlhZ/+9KchPXnR0dGyec2eHbqW85o1a7BarX4TYUtLCyaTCYvFQm5urqa1Z6hDJIoKDF+PnYCAILGAQIQQtk7c3d0ti6qKjY0NKwwSrkTASeGUo0aN0tQfW1tbuXjxoszGq3S5KuejN57aPKSAnp6eHmJjY4Pc0AJD0E7cl7R5NdNSfn6+4YwONU9VuKYqyWKhlqktWU2Ki4s17cQCQ8BjFygZgbB3xMqAdrVIMgmBsRYmk4kbb7xRVVoH4o477tC9/iOPPMKCBQuCgmUkOJ1OioqKuPnmm3Uj4wQGsU586dIlWTsmJias85WRbFrmObfbzYkTJ/ztSZMmMXp0cJFRZUyuXgzt0qVLef/99w3NMzY2NqwqQAKDiMTHjx+XtbUir4xIV4AJE9R/pFwZ9piUlKRKqvb2dllbK0j94MGDslw9k8lERUUFDocDh8OB3W6npKQEgKysLI4cORK2ri8wSDZ2ynA/I46OQCjDIrViir1er6ydkJDQp5dKmat3/Phx2QZw7NixfmdCX1KOBAYBiQ8cOCBrG63gI6GtrU3Wjo6O1rQcGNGd6+vrZW0t6RlowcjOztYkam8I7PV6gwLXJVWrv6pVtre39+v4Q1qdUHtY4UAZfqildyqTI7UkdlNTU0gSKrOA9+zZEzLNPxy88847xMXFMWHCBCZPnkxcXBxxcXEynT6SqKurIy4ujkOHDgkxHK4kVuqfyvpfRiRWYMq7xWLhhhtuMCSxtVLjA7N7tTBmzBjGjx8viyuWYioyMjJITEzktttuC3tVkTBlyhRKS0vZunUru3bt8md+K7OyI4XU1FSam5uFzi4hHHuckbBGPShje/VsuspIObUKOspsBr0qmcqsEq2jpKREM3wyFKRIOKUdW4qjzs7OlkWZzZs3z2e1Wv3ZIoF15Ww2my8rK8sf9hlY8lWKzJPs5na7XZb9UVZWJuzEWlCas/QSPdUgRZsFmrG0oEz8VNvYKfPd9MxrK1euDMrLU8MzzzxDenp60MayN6qSJKWTk5MpKytjz549/PrXvwaueBp37drF3r17efrppzGbzSxatMh/XnV1Nfv27WPOnDlkZ2djs9n8KpCUISPZza1WK01NTVRUVGCz2ULayoe1TqxMMdcq4qEFZeq8nnnu448/DklipeMlVGLk5s2bKSsrC0nm5ubmsMuier1empqaZCrW/v37cTqdxMfH43Q6MZvNVFVVAd9lYL/66qusWbOG2bNnyza5p0+fJicnh2effZbly5cD32U5S+lhkvpz5MgRGhsbKS8vJzk5WbcUwrAnsV5unREoc+y06pgpN5Bms1k1X0y5ydQywwUiNzeXzZs34/P58Hg81NbWUlZWFvQCbN26NewNb01NjawehjS/6dOnM3r0aNavX8/69etlJJbuod1u93s/3W43jY2Nfokq/aSERNoTJ07I5nvo0CGWLVtGZWUljz/+uGGHzrAksZKEei5jIxtDrY2Psp+WLbqurq5P5r6RI0eSlpZGbm5uUHHwcAvzSerH9OnT/Z9JjpfOzk6SkpL48MMP/ZJaWtVuuOEGvF6vjLSXLl3C6XT61TWlbd1utzNx4kT/vdq0aROLFi3yl0boS1WiIU9ipdkrXBIbRWVlpaw9d+7cPtmSjaC3lgklAq0tmZmZFBQUsGrVKmbOnInT6fSTXbqXEyZMwOl00tra6ietJKWll7ylpcVPfunlyszM9N+r4uJiZs6cydy5c8nLywvK3hbWCZ1s5XCxZcuWkFXlu7q6gmo7aCWi5uXlGU4qXbt2rW5VeeXcjPyIjlqiqxpcLleQxaOrq0tWF8Llcski55T/Czzf4/HI+rpcLp/D4RhWPzbTqxy7zs5OWdWf1NRU3d/nkPS9wCg3pUTdsmUL8fHxLF68mJiYGOrr61mxYoXMEZGVleWXOqE2dlqVcV566SV/1cu8vDyeeOIJEhMTGTFiBA6Hgx07dgTVjwiV36elnmjZqYMM9FFRMj1f2Ufvf8rrDPtApd7GARs5lBXj1bKK6eUvGLlcLll6v1b193BS3elljLTAIEnZ1/vdDK1DzejucDhC/vYbBn5LTpmur+U4aW5u9qWmphqec0lJiWDFUHV2KJduI1AzwY0dO5bdu3cHFeUORGlpKadOndJNFVIW2dOq2ZuSksKJEycoLS3V3bXn5+dTX18f1q+bCgwMGE7Zb29v58yZM4br8fb09DBx4sSQlcobGhr8L4jZbDYcReZ2u2lubmbEiBH09PQQHx9vKJagtbWVCxcu+E1cIq9uGJFYQGBI2IkFBASJBQQEiQUEBIkFBIkFBASJBQQEiQUEBIkFBIkFBAYa/h9ogwH+VV5y5QAAAABJRU5ErkJggg==" alt="Marcio Luis Tennis" class="h-11 w-auto object-contain" />
+        <div class="hidden sm:block border-l border-gray-200 pl-3">
+          <p class="text-xs font-semibold uppercase tracking-wider text-gray-400">Assessoria de Tênis</p>
+          <p class="text-sm font-bold text-gray-800">Controle de Aulas & Presenças</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span id="syncStatus" class="inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          <span id="syncText">Sincronizado</span>
+        </span>
+        <button id="btnSwitchMode" onclick="toggleModeModal()" class="text-xs sm:text-sm font-semibold px-3 py-1.5 rounded-lg bg-gray-900 text-white hover:bg-gray-800 transition">
+          Área do Professor
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Conteúdo Principal -->
+  <main class="flex-1 max-w-5xl w-full mx-auto px-4 py-6">
+
+    <!-- TELA 1: ACESSO DO ALUNO -->
+    <section id="studentLoginView" class="max-w-md mx-auto mt-4">
+      <div class="bg-white rounded-2xl p-6 sm:p-8 card-shadow border border-gray-100">
+        <div class="text-center mb-6">
+          <img src="data:image/png;base64,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" alt="Marcio Luis Tennis" class="h-14 mx-auto mb-3 object-contain" />
+          <h1 class="text-xl font-extrabold text-gray-900">Portal do Aluno</h1>
+          <p class="text-sm text-gray-500 mt-1">Consulte seu saldo de aulas e confirme sua presença na quadra.</p>
+        </div>
+
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1.5">Selecione seu nome</label>
+            <select id="studentSelect" class="w-full rounded-xl border border-gray-300 px-3.5 py-3 text-sm font-medium bg-white focus:outline-none focus:ring-2 focus:ring-lime-500">
+              <option value="">-- Escolha seu nome --</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold uppercase tracking-wider text-gray-600 mb-1.5">PIN de Acesso (4 dígitos)</label>
+            <input id="studentPinInput" type="password" maxlength="4" inputmode="numeric" placeholder="••••"
+              class="w-full rounded-xl border border-gray-300 px-3.5 py-3 text-center text-lg font-bold tracking-[0.5em] focus:outline-none focus:ring-2 focus:ring-lime-500" />
+            <p class="text-[11px] text-gray-400 mt-1.5 text-center">PINs de teste: Carlos (1234) • Fernanda (2345) • Ricardo (3456) • Juliana (4567)</p>
+          </div>
+
+          <p id="studentLoginError" class="hidden text-xs font-semibold text-red-600 bg-red-50 border border-red-200 rounded-lg p-2.5 text-center"></p>
+
+          <button onclick="loginStudent()" class="w-full py-3.5 rounded-xl font-bold text-gray-950 bg-[#84cc16] hover:bg-[#76b813] transition shadow-sm">
+            Acessar Minhas Aulas
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- TELA 2: PAINEL DO ALUNO (SOMENTE LEITURA + CHECK-IN) -->
+    <section id="studentDashboardView" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl p-5 sm:p-6 card-shadow border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="inline-block text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-lime-100 text-lime-800 mb-1">Aluno Ativo • Somente Leitura</span>
+          <h2 id="dashStudentName" class="text-2xl font-extrabold text-gray-900">Nome do Aluno</h2>
+          <p id="dashStudentObs" class="text-sm text-gray-500 mt-0.5">Plano Mensal</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button onclick="copyStudentLink(currentStudentId)" class="text-xs font-semibold px-3 py-2 rounded-xl border border-gray-200 text-gray-700 hover:bg-gray-50 transition">
+            Copiar Meu Link
+          </button>
+          <button onclick="logoutStudent()" class="text-xs font-semibold px-3 py-2 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+            Sair
+          </button>
+        </div>
+      </div>
+
+      <!-- Cards de Saldo -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div class="bg-white rounded-2xl p-4 card-shadow border border-gray-100">
+          <p class="text-xs font-semibold text-gray-500">Pacote Mensal</p>
+          <p id="statPackage" class="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-1">0</p>
+          <p class="text-[11px] text-gray-400 mt-0.5">aulas contratadas</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 card-shadow border border-gray-100">
+          <p class="text-xs font-semibold text-gray-500">Aulas Realizadas</p>
+          <p id="statDone" class="text-2xl sm:text-3xl font-extrabold text-emerald-600 mt-1">0</p>
+          <p class="text-[11px] text-gray-400 mt-0.5">presenças confirmadas</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 card-shadow border border-gray-100">
+          <p class="text-xs font-semibold text-gray-500">Saldo Restante</p>
+          <p id="statRemaining" class="text-2xl sm:text-3xl font-extrabold text-gray-900 mt-1">0</p>
+          <p class="text-[11px] text-gray-400 mt-0.5">aulas disponíveis</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 card-shadow border border-gray-100">
+          <p class="text-xs font-semibold text-gray-500">Reposições</p>
+          <p id="statMakeup" class="text-2xl sm:text-3xl font-extrabold text-amber-600 mt-1">0</p>
+          <p class="text-[11px] text-gray-400 mt-0.5">créditos pendentes</p>
+        </div>
+      </div>
+
+      <!-- Botão Único de Ação do Aluno: Check-in -->
+      <div class="bg-gray-900 text-white rounded-2xl p-6 card-shadow flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <h3 class="text-lg font-bold">Está na quadra agora?</h3>
+          <p class="text-sm text-gray-300 mt-0.5">Confirme sua presença na aula de hoje (<span id="todayDateLabel" class="font-semibold text-white"></span>).</p>
+        </div>
+        <button id="btnCheckinToday" onclick="studentCheckIn()" class="w-full sm:w-auto px-6 py-3.5 rounded-xl font-extrabold text-gray-950 bg-[#84cc16] hover:bg-[#76b813] transition shadow-lg whitespace-nowrap">
+          ✓ Confirmar Presença Hoje
+        </button>
+      </div>
+
+      <!-- Aviso Política de Cancelamento -->
+      <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-xs text-amber-900 flex items-start gap-3">
+        <span class="text-base">⚠️</span>
+        <div>
+          <p class="font-bold">Política de Cancelamento e Reposições — Marcio Luis Tennis</p>
+          <p class="mt-0.5 leading-relaxed">Cancelamentos ou alterações de plano mensal devem ser comunicados com <strong>1 semana de antecedência</strong> antes do fechamento do mês (sujeito a taxa de 50% fora do prazo). Faltas justificadas com antecedência e dias de chuva geram crédito automático de reposição.</p>
+        </div>
+      </div>
+
+      <!-- Histórico Somente Leitura -->
+      <div class="bg-white rounded-2xl p-5 sm:p-6 card-shadow border border-gray-100">
+        <h3 class="text-base font-bold text-gray-900 mb-4">Histórico de Presenças e Ocorrências</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 text-[11px] font-bold uppercase text-gray-400">
+                <th class="py-2.5 px-3">Data</th>
+                <th class="py-2.5 px-3">Horário</th>
+                <th class="py-2.5 px-3">Status</th>
+                <th class="py-2.5 px-3">Lançado por</th>
+              </tr>
+            </thead>
+            <tbody id="studentHistoryBody" class="divide-y divide-gray-100 text-sm"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TELA 3: PAINEL DO PROFESSOR (CONTROLE TOTAL) -->
+    <section id="teacherDashboardView" class="hidden space-y-6">
+      <div class="bg-white rounded-2xl p-5 sm:p-6 card-shadow border border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="inline-block text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-gray-900 text-[#84cc16] mb-1">Modo Administrador • Edição Liberada</span>
+          <h2 class="text-2xl font-extrabold text-gray-900">Painel do Professor — Marcio Luis</h2>
+          <p class="text-sm text-gray-500 mt-0.5">Gerencie alunos, pacotes, presenças, reposições e links individuais.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <button onclick="openAddStudentModal()" class="text-xs font-bold px-3.5 py-2.5 rounded-xl bg-[#84cc16] text-gray-950 hover:bg-[#76b813] transition">
+            + Novo Aluno
+          </button>
+          <button onclick="exportCSV()" class="text-xs font-semibold px-3.5 py-2.5 rounded-xl border border-gray-300 text-gray-700 hover:bg-gray-50 transition">
+            Exportar Planilha (.CSV)
+          </button>
+          <button onclick="exitTeacherMode()" class="text-xs font-semibold px-3.5 py-2.5 rounded-xl bg-gray-100 text-gray-700 hover:bg-gray-200 transition">
+            Sair
+          </button>
+        </div>
+      </div>
+
+      <!-- Resumo Geral -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <div class="bg-white rounded-2xl p-4 card-shadow border border-gray-100">
+          <p class="text-xs font-semibold text-gray-500">Alunos Ativos</p>
+          <p id="kpiStudents" class="text-2xl font-extrabold text-gray-900 mt-1">0</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 card-shadow border border-gray-100">
+          <p class="text-xs font-semibold text-gray-500">Aulas Contratadas</p>
+          <p id="kpiTotalPkg" class="text-2xl font-extrabold text-gray-900 mt-1">0</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 card-shadow border border-gray-100">
+          <p class="text-xs font-semibold text-gray-500">Presenças no Mês</p>
+          <p id="kpiTotalDone" class="text-2xl font-extrabold text-emerald-600 mt-1">0</p>
+        </div>
+        <div class="bg-white rounded-2xl p-4 card-shadow border border-gray-100">
+          <p class="text-xs font-semibold text-gray-500">Reposições em Aberto</p>
+          <p id="kpiTotalMakeup" class="text-2xl font-extrabold text-amber-600 mt-1">0</p>
+        </div>
+      </div>
+
+      <!-- Lançamento Manual Rápido pelo Professor -->
+      <div class="bg-white rounded-2xl p-5 sm:p-6 card-shadow border border-gray-100">
+        <h3 class="text-base font-bold text-gray-900 mb-3">Lançar Registro Manual (Aula, Falta, Reposição ou Chuva)</h3>
+        <div class="grid grid-cols-1 sm:grid-cols-4 gap-3">
+          <select id="manualStudentSelect" class="rounded-xl border border-gray-300 px-3 py-2.5 text-sm bg-white"></select>
+          <input id="manualDateInput" type="date" class="rounded-xl border border-gray-300 px-3 py-2.5 text-sm" />
+          <select id="manualTypeSelect" class="rounded-xl border border-gray-300 px-3 py-2.5 text-sm bg-white">
+            <option value="Presença Confirmada">Presença Confirmada (-1 saldo)</option>
+            <option value="Falta Justificada">Falta Justificada (+1 reposição)</option>
+            <option value="Chuva">Chuva / Quadra Molhada (+1 reposição)</option>
+            <option value="Reposição">Aula de Reposição Realizada (-1 reposição)</option>
+            <option value="Falta sem Aviso">Falta sem Aviso (-1 saldo)</option>
+          </select>
+          <button onclick="teacherAddRecord()" class="rounded-xl font-bold text-sm bg-gray-900 text-white hover:bg-gray-800 px-4 py-2.5 transition">
+            Registrar Lançamento
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabela Mestre de Alunos -->
+      <div class="bg-white rounded-2xl p-5 sm:p-6 card-shadow border border-gray-100">
+        <h3 class="text-base font-bold text-gray-900 mb-4">Controle de Pacotes e Saldos por Aluno</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 text-[11px] font-bold uppercase text-gray-400">
+                <th class="py-3 px-3">Aluno & PIN</th>
+                <th class="py-3 px-3 text-center">Pacote</th>
+                <th class="py-3 px-3 text-center">Feitas</th>
+                <th class="py-3 px-3 text-center">Saldo</th>
+                <th class="py-3 px-3 text-center">Reposições</th>
+                <th class="py-3 px-3">Status / Aviso 1 Sem.</th>
+                <th class="py-3 px-3 text-right">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="teacherStudentsBody" class="divide-y divide-gray-100 text-sm"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Histórico Geral de Lançamentos -->
+      <div class="bg-white rounded-2xl p-5 sm:p-6 card-shadow border border-gray-100">
+        <h3 class="text-base font-bold text-gray-900 mb-4">Últimos Registros na Quadra</h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 text-[11px] font-bold uppercase text-gray-400">
+                <th class="py-2.5 px-3">Data</th>
+                <th class="py-2.5 px-3">Hora</th>
+                <th class="py-2.5 px-3">Aluno</th>
+                <th class="py-2.5 px-3">Tipo</th>
+                <th class="py-2.5 px-3">Origem</th>
+                <th class="py-2.5 px-3 text-right">Excluir</th>
+              </tr>
+            </thead>
+            <tbody id="teacherLogsBody" class="divide-y divide-gray-100 text-sm"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Modal Senha do Professor -->
+  <div id="teacherAuthModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-sm w-full p-6 card-shadow">
+      <h3 class="text-lg font-extrabold text-gray-900">Acesso Restrito ao Professor</h3>
+      <p class="text-xs text-gray-500 mt-1">Digite a senha de administrador para editar pacotes e lançamentos.</p>
+      <input id="teacherPassInput" type="password" placeholder="Senha do professor"
+        class="w-full mt-4 rounded-xl border border-gray-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-lime-500" />
+      <p class="text-[11px] text-gray-400 mt-1">Senha padrão: <strong>marcio2026</strong></p>
+      <p id="teacherAuthError" class="hidden text-xs text-red-600 font-semibold mt-2">Senha incorreta.</p>
+      <div class="mt-5 flex justify-end gap-2">
+        <button onclick="closeTeacherModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 hover:bg-gray-100">Cancelar</button>
+        <button onclick="loginTeacher()" class="px-4 py-2 rounded-xl text-xs font-bold bg-gray-900 text-white hover:bg-gray-800">Entrar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Novo / Editar Aluno -->
+  <div id="studentFormModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 card-shadow">
+      <h3 id="studentModalTitle" class="text-lg font-extrabold text-gray-900">Cadastrar Aluno</h3>
+      <input type="hidden" id="editStudentId" />
+      <div class="space-y-3 mt-4">
+        <div>
+          <label class="block text-xs font-bold text-gray-600 mb-1">Nome Completo</label>
+          <input id="formStudentName" type="text" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" placeholder="Ex: João Silva" />
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-bold text-gray-600 mb-1">Pacote Mensal (Aulas)</label>
+            <input id="formStudentPkg" type="number" min="1" max="31" value="4" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" />
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-gray-600 mb-1">PIN de Acesso (4 dígitos)</label>
+            <input id="formStudentPin" type="text" maxlength="4" value="1234" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-600 mb-1">Status de Cancelamento (Aviso 1 Semana)</label>
+          <select id="formStudentStatus" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm bg-white">
+            <option value="Ativo">Ativo</option>
+            <option value="Aviso Prévio (No Prazo)">Aviso Prévio (No Prazo - sem multa)</option>
+            <option value="Aviso Prévio (Fora do Prazo)">Aviso Prévio (Fora do Prazo - taxa 50%)</option>
+            <option value="Cancelado">Cancelado</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-xs font-bold text-gray-600 mb-1">Observações / Horário Fixo</label>
+          <input id="formStudentObs" type="text" class="w-full rounded-xl border border-gray-300 px-3 py-2 text-sm" placeholder="Ex: Terças e Quintas às 08h" />
+        </div>
+      </div>
+      <div class="mt-5 flex justify-end gap-2">
+        <button onclick="closeStudentFormModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-gray-600 hover:bg-gray-100">Cancelar</button>
+        <button onclick="saveStudentForm()" class="px-4 py-2 rounded-xl text-xs font-bold bg-[#84cc16] text-gray-950 hover:bg-[#76b813]">Salvar Aluno</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast de Notificação -->
+  <div id="toast" class="hidden fixed bottom-5 right-5 z-50 bg-gray-900 text-white text-xs font-semibold px-4 py-3 rounded-xl shadow-lg"></div>
+
+  <script>
+    const STORAGE_KEY = 'marcio_luis_tennis_data_v2';
+    const CLOUD_CHANNEL = 'marcio-luis-tennis-sync-2026';
+    const TEACHER_PASS = 'marcio2026';
+
+    const defaultData = {
+      updatedAt: Date.now(),
+      students: [
+        { id: 'alu-1', name: 'Carlos Eduardo Mendes', pkg: 8, pin: '1234', status: 'Ativo', obs: 'Terças e Quintas - 08:00' },
+        { id: 'alu-2', name: 'Fernanda Lima', pkg: 4, pin: '2345', status: 'Ativo', obs: 'Sábados - 09:00' },
+        { id: 'alu-3', name: 'Ricardo Alves', pkg: 8, pin: '3456', status: 'Aviso Prévio (No Prazo)', obs: 'Segundas e Quartas - 18:00' },
+        { id: 'alu-4', name: 'Juliana Costa', pkg: 4, pin: '4567', status: 'Ativo', obs: 'Sextas - 10:00' }
+      ],
+      logs: [
+        { id: 'log-1', studentId: 'alu-1', date: '2026-11-03', time: '08:02', type: 'Presença Confirmada', by: 'Aluno' },
+        { id: 'log-2', studentId: 'alu-1', date: '2026-11-05', time: '08:00', type: 'Presença Confirmada', by: 'Aluno' },
+        { id: 'log-3', studentId: 'alu-1', date: '2026-11-10', time: '08:05', type: 'Chuva', by: 'Professor' },
+        { id: 'log-4', studentId: 'alu-2', date: '2026-11-07', time: '09:01', type: 'Presença Confirmada', by: 'Aluno' },
+        { id: 'log-5', studentId: 'alu-3', date: '2026-11-02', time: '18:00', type: 'Presença Confirmada', by: 'Aluno' },
+        { id: 'log-6', studentId: 'alu-3', date: '2026-11-04', time: '18:10', type: 'Falta Justificada', by: 'Professor' },
+        { id: 'log-7', studentId: 'alu-4', date: '2026-11-06', time: '10:00', type: 'Presença Confirmada', by: 'Aluno' }
+      ]
+    };
+
+    let appState = loadLocalState();
+    let currentStudentId = null;
+    let isTeacher = false;
+
+    function loadLocalState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) return JSON.parse(raw);
+      } catch (e) {}
+      return JSON.parse(JSON.stringify(defaultData));
+    }
+
+    async function saveState(pushCloud = true) {
+      appState.updatedAt = Date.now();
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      renderAll();
+      if (pushCloud) {
+        setSyncStatus('syncing', 'Sincronizando...');
+        try {
+          await fetch(`https://ntfy.sh/${CLOUD_CHANNEL}`, {
+            method: 'POST',
+            body: JSON.stringify(appState)
+          });
+          setSyncStatus('ok', 'Sincronizado ao vivo');
+        } catch (err) {
+          setSyncStatus('offline', 'Salvo offline');
+        }
+      }
+    }
+
+    async function pullCloudState() {
+      try {
+        const res = await fetch(`https://ntfy.sh/${CLOUD_CHANNEL}/json?poll=1`);
+        const text = await res.text();
+        const lines = text.trim().split('\n').filter(Boolean);
+        if (lines.length > 0) {
+          const lastMsg = JSON.parse(lines[lines.length - 1]);
+          if (lastMsg && lastMsg.message) {
+            const remoteData = JSON.parse(lastMsg.message);
+            if (remoteData.updatedAt && remoteData.updatedAt > (appState.updatedAt || 0)) {
+              appState = remoteData;
+              localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+              renderAll();
+            }
+          }
+        }
+        setSyncStatus('ok', 'Sincronizado ao vivo');
+      } catch (e) {
+        setSyncStatus('offline', 'Modo local');
+      }
+    }
+
+    function startRealtimeListener() {
+      pullCloudState();
+      setInterval(pullCloudState, 8000);
+    }
+
+    function setSyncStatus(state, label) {
+      const el = document.getElementById('syncText');
+      if (el) el.textContent = label;
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.remove('hidden');
+      setTimeout(() => t.classList.add('hidden'), 3200);
+    }
+
+    function getTodayISO() {
+      const now = new Date();
+      const offset = now.getTimezoneOffset();
+      const local = new Date(now.getTime() - (offset * 60 * 1000));
+      return local.toISOString().split('T')[0];
+    }
+
+    function formatDateBR(iso) {
+      if (!iso) return '';
+      const [y, m, d] = iso.split('-');
+      return `${d}/${m}/${y}`;
+    }
+
+    function calcStudentStats(student) {
+      const sLogs = appState.logs.filter(l => l.studentId === student.id);
+      const done = sLogs.filter(l => l.type === 'Presença Confirmada' || l.type === 'Falta sem Aviso').length;
+      const credits = sLogs.filter(l => l.type === 'Falta Justificada' || l.type === 'Chuva').length;
+      const madeUp = sLogs.filter(l => l.type === 'Reposição').length;
+      const remaining = Math.max(0, student.pkg - done);
+      const makeupPending = Math.max(0, credits - madeUp);
+      return { done, remaining, makeupPending, logs: sLogs };
+    }
+
+    function renderAll() {
+      // Popular selects
+      const selLogin = document.getElementById('studentSelect');
+      const prevVal = selLogin.value;
+      selLogin.innerHTML = '<option value="">-- Escolha seu nome --</option>' +
+        appState.students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+      if (prevVal) selLogin.value = prevVal;
+
+      const selManual = document.getElementById('manualStudentSelect');
+      if (selManual) {
+        selManual.innerHTML = appState.students.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+      }
+
+      // Checar parâmetro URL ?aluno=ID
+      const params = new URLSearchParams(window.location.search);
+      const urlAluno = params.get('aluno');
+      if (urlAluno && !currentStudentId && !isTeacher) {
+        selLogin.value = urlAluno;
+      }
+
+      if (currentStudentId) renderStudentDashboard();
+      if (isTeacher) renderTeacherDashboard();
+    }
+
+    function loginStudent() {
+      const id = document.getElementById('studentSelect').value;
+      const pin = document.getElementById('studentPinInput').value.trim();
+      const err = document.getElementById('studentLoginError');
+      const student = appState.students.find(s => s.id === id);
+
+      if (!student) {
+        err.textContent = 'Selecione seu nome na lista.';
+        err.classList.remove('hidden');
+        return;
+      }
+      if (student.pin !== pin) {
+        err.textContent = 'PIN incorreto. Verifique seus 4 dígitos com o professor.';
+        err.classList.remove('hidden');
+        return;
+      }
+
+      err.classList.add('hidden');
+      currentStudentId = student.id;
+      document.getElementById('studentLoginView').classList.add('hidden');
+      document.getElementById('studentDashboardView').classList.remove('hidden');
+      renderStudentDashboard();
+    }
+
+    function logoutStudent() {
+      currentStudentId = null;
+      document.getElementById('studentPinInput').value = '';
+      document.getElementById('studentDashboardView').classList.add('hidden');
+      document.getElementById('studentLoginView').classList.remove('hidden');
+    }
+
+    function renderStudentDashboard() {
+      const student = appState.students.find(s => s.id === currentStudentId);
+      if (!student) return logoutStudent();
+
+      const stats = calcStudentStats(student);
+      const today = getTodayISO();
+
+      document.getElementById('dashStudentName').textContent = student.name;
+      document.getElementById('dashStudentObs').textContent = `${student.obs || 'Plano Mensal'} • Status: ${student.status}`;
+      document.getElementById('statPackage').textContent = student.pkg;
+      document.getElementById('statDone').textContent = stats.done;
+      document.getElementById('statRemaining').textContent = stats.remaining;
+      document.getElementById('statMakeup').textContent = stats.makeupPending;
+      document.getElementById('todayDateLabel').textContent = formatDateBR(today);
+
+      const alreadyChecked = stats.logs.some(l => l.date === today && l.type === 'Presença Confirmada');
+      const btn = document.getElementById('btnCheckinToday');
+      if (alreadyChecked) {
+        btn.disabled = true;
+        btn.textContent = '✓ Presença Confirmada Hoje';
+        btn.className = 'w-full sm:w-auto px-6 py-3.5 rounded-xl font-bold text-emerald-900 bg-emerald-200 cursor-not-allowed whitespace-nowrap';
+      } else {
+        btn.disabled = false;
+        btn.textContent = '✓ Confirmar Presença Hoje';
+        btn.className = 'w-full sm:w-auto px-6 py-3.5 rounded-xl font-extrabold text-gray-950 bg-[#84cc16] hover:bg-[#76b813] transition shadow-lg whitespace-nowrap';
+      }
+
+      const tbody = document.getElementById('studentHistoryBody');
+      const sorted = [...stats.logs].sort((a, b) => b.date.localeCompare(a.date));
+      tbody.innerHTML = sorted.length ? sorted.map(l => `
+        <tr>
+          <td class="py-3 px-3 font-medium text-gray-900">${formatDateBR(l.date)}</td>
+          <td class="py-3 px-3 text-gray-500">${l.time || '--:--'}</td>
+          <td class="py-3 px-3"><span class="px-2.5 py-0.5 rounded-full text-xs font-semibold ${badgeColor(l.type)}">${l.type}</span></td>
+          <td class="py-3 px-3 text-xs text-gray-500">${l.by}</td>
+        </tr>
+      `).join('') : '<tr><td colspan="4" class="py-4 text-center text-gray-400 text-xs">Nenhum registro encontrado ainda.</td></tr>';
+    }
+
+    function badgeColor(type) {
+      if (type === 'Presença Confirmada') return 'bg-emerald-100 text-emerald-800';
+      if (type === 'Reposição') return 'bg-blue-100 text-blue-800';
+      if (type === 'Falta Justificada' || type === 'Chuva') return 'bg-amber-100 text-amber-800';
+      return 'bg-red-100 text-red-800';
+    }
+
+    function studentCheckIn() {
+      if (!currentStudentId) return;
+      const today = getTodayISO();
+      const exists = appState.logs.some(l => l.studentId === currentStudentId && l.date === today && l.type === 'Presença Confirmada');
+      if (exists) return showToast('Sua presença de hoje já foi confirmada!');
+
+      const now = new Date();
+      const time = now.toTimeString().slice(0, 5);
+      appState.logs.push({
+        id: 'log-' + Date.now(),
+        studentId: currentStudentId,
+        date: today,
+        time,
+        type: 'Presença Confirmada',
+        by: 'Aluno'
+      });
+      saveState(true);
+      showToast('Presença confirmada com sucesso! Bom treino 🎾');
+    }
+
+    function toggleModeModal() {
+      if (isTeacher) return exitTeacherMode();
+      document.getElementById('teacherAuthModal').classList.remove('hidden');
+      document.getElementById('teacherPassInput').focus();
+    }
+
+    function closeTeacherModal() {
+      document.getElementById('teacherAuthModal').classList.add('hidden');
+      document.getElementById('teacherAuthError').classList.add('hidden');
+    }
+
+    function loginTeacher() {
+      const val = document.getElementById('teacherPassInput').value;
+      if (val !== TEACHER_PASS) {
+        document.getElementById('teacherAuthError').classList.remove('hidden');
+        return;
+      }
+      closeTeacherModal();
+      document.getElementById('teacherPassInput').value = '';
+      isTeacher = true;
+      currentStudentId = null;
+      document.getElementById('studentLoginView').classList.add('hidden');
+      document.getElementById('studentDashboardView').classList.add('hidden');
+      document.getElementById('teacherDashboardView').classList.remove('hidden');
+      document.getElementById('btnSwitchMode').textContent = 'Modo Aluno';
+      document.getElementById('manualDateInput').value = getTodayISO();
+      renderTeacherDashboard();
+    }
+
+    function exitTeacherMode() {
+      isTeacher = false;
+      document.getElementById('teacherDashboardView').classList.add('hidden');
+      document.getElementById('studentLoginView').classList.remove('hidden');
+      document.getElementById('btnSwitchMode').textContent = 'Área do Professor';
+    }
+
+    function renderTeacherDashboard() {
+      let totalPkg = 0, totalDone = 0, totalMakeup = 0;
+
+      const rows = appState.students.map(s => {
+        const st = calcStudentStats(s);
+        totalPkg += Number(s.pkg);
+        totalDone += st.done;
+        totalMakeup += st.makeupPending;
+
+        return `
+          <tr class="hover:bg-gray-50">
+            <td class="py-3 px-3">
+              <p class="font-bold text-gray-900">${s.name}</p>
+              <p class="text-[11px] text-gray-400">PIN: <strong>${s.pin}</strong> • ${s.obs || ''}</p>
+            </td>
+            <td class="py-3 px-3 text-center font-bold">${s.pkg}</td>
+            <td class="py-3 px-3 text-center font-bold text-emerald-600">${st.done}</td>
+            <td class="py-3 px-3 text-center font-extrabold text-gray-900">${st.remaining}</td>
+            <td class="py-3 px-3 text-center">
+              <span class="px-2 py-0.5 rounded-full text-xs font-bold ${st.makeupPending > 0 ? 'bg-amber-100 text-amber-800' : 'bg-gray-100 text-gray-500'}">${st.makeupPending}</span>
+            </td>
+            <td class="py-3 px-3 text-xs font-medium text-gray-600">${s.status}</td>
+            <td class="py-3 px-3 text-right whitespace-nowrap space-x-1">
+              <button onclick="copyStudentLink('${s.id}')" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-lime-100 text-lime-900 hover:bg-lime-200">Link</button>
+              <button onclick="openEditStudentModal('${s.id}')" class="px-2.5 py-1 rounded-lg text-xs font-semibold bg-gray-100 text-gray-700 hover:bg-gray-200">Editar</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      document.getElementById('kpiStudents').textContent = appState.students.length;
+      document.getElementById('kpiTotalPkg').textContent = totalPkg;
+      document.getElementById('kpiTotalDone').textContent = totalDone;
+      document.getElementById('kpiTotalMakeup').textContent = totalMakeup;
+      document.getElementById('teacherStudentsBody').innerHTML = rows;
+
+      const sortedLogs = [...appState.logs].sort((a, b) => b.date.localeCompare(a.date));
+      document.getElementById('teacherLogsBody').innerHTML = sortedLogs.map(l => {
+        const st = appState.students.find(x => x.id === l.studentId);
+        return `
+          <tr>
+            <td class="py-2.5 px-3 font-medium">${formatDateBR(l.date)}</td>
+            <td class="py-2.5 px-3 text-gray-500">${l.time || '--:--'}</td>
+            <td class="py-2.5 px-3 font-semibold text-gray-900">${st ? st.name : 'Aluno removido'}</td>
+            <td class="py-2.5 px-3"><span class="px-2 py-0.5 rounded-full text-xs font-semibold ${badgeColor(l.type)}">${l.type}</span></td>
+            <td class="py-2.5 px-3 text-xs text-gray-500">${l.by}</td>
+            <td class="py-2.5 px-3 text-right">
+              <button onclick="deleteLog('${l.id}')" class="text-xs font-bold text-red-600 hover:underline">Remover</button>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function teacherAddRecord() {
+      const studentId = document.getElementById('manualStudentSelect').value;
+      const date = document.getElementById('manualDateInput').value || getTodayISO();
+      const type = document.getElementById('manualTypeSelect').value;
+      if (!studentId) return;
+
+      const now = new Date();
+      appState.logs.push({
+        id: 'log-' + Date.now(),
+        studentId,
+        date,
+        time: now.toTimeString().slice(0, 5),
+        type,
+        by: 'Professor'
+      });
+      saveState(true);
+      showToast('Lançamento registrado com sucesso!');
+    }
+
+    function deleteLog(logId) {
+      appState.logs = appState.logs.filter(l => l.id !== logId);
+      saveState(true);
+      showToast('Registro removido.');
+    }
+
+    function openAddStudentModal() {
+      document.getElementById('studentModalTitle').textContent = 'Cadastrar Novo Aluno';
+      document.getElementById('editStudentId').value = '';
+      document.getElementById('formStudentName').value = '';
+      document.getElementById('formStudentPkg').value = 4;
+      document.getElementById('formStudentPin').value = Math.floor(1000 + Math.random() * 9000);
+      document.getElementById('formStudentStatus').value = 'Ativo';
+      document.getElementById('formStudentObs').value = '';
+      document.getElementById('studentFormModal').classList.remove('hidden');
+    }
+
+    function openEditStudentModal(id) {
+      const s = appState.students.find(x => x.id === id);
+      if (!s) return;
+      document.getElementById('studentModalTitle').textContent = 'Editar Aluno';
+      document.getElementById('editStudentId').value = s.id;
+      document.getElementById('formStudentName').value = s.name;
+      document.getElementById('formStudentPkg').value = s.pkg;
+      document.getElementById('formStudentPin').value = s.pin;
+      document.getElementById('formStudentStatus').value = s.status;
+      document.getElementById('formStudentObs').value = s.obs || '';
+      document.getElementById('studentFormModal').classList.remove('hidden');
+    }
+
+    function closeStudentFormModal() {
+      document.getElementById('studentFormModal').classList.add('hidden');
+    }
+
+    function saveStudentForm() {
+      const id = document.getElementById('editStudentId').value;
+      const name = document.getElementById('formStudentName').value.trim();
+      const pkg = parseInt(document.getElementById('formStudentPkg').value, 10) || 4;
+      const pin = document.getElementById('formStudentPin').value.trim() || '1234';
+      const status = document.getElementById('formStudentStatus').value;
+      const obs = document.getElementById('formStudentObs').value.trim();
+
+      if (!name) return showToast('Informe o nome do aluno.');
+
+      if (id) {
+        const idx = appState.students.findIndex(x => x.id === id);
+        if (idx >= 0) appState.students[idx] = { ...appState.students[idx], name, pkg, pin, status, obs };
+      } else {
+        appState.students.push({ id: 'alu-' + Date.now(), name, pkg, pin, status, obs });
+      }
+      closeStudentFormModal();
+      saveState(true);
+      showToast('Dados do aluno salvos!');
+    }
+
+    function copyStudentLink(id) {
+      const base = window.location.href.split('?')[0];
+      const link = `${base}?aluno=${id}`;
+      navigator.clipboard.writeText(link).then(() => {
+        showToast('Link individual copiado! Cole no WhatsApp do aluno.');
+      }).catch(() => {
+        prompt('Copie o link direto do aluno:', link);
+      });
+    }
+
+    function exportCSV() {
+      const header = ['Aluno', 'PIN', 'Pacote Mensal', 'Aulas Realizadas', 'Saldo Restante', 'Reposicoes Pendentes', 'Status Cancelamento', 'Observacoes'];
+      const rows = appState.students.map(s => {
+        const st = calcStudentStats(s);
+        return [s.name, s.pin, s.pkg, st.done, st.remaining, st.makeupPending, s.status, s.obs || ''];
+      });
+      const csv = [header, ...rows].map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(';')).join('\n');
+      const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `Marcio_Luis_Tennis_Controle_${getTodayISO()}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Planilha CSV baixada!');
+    }
+
+    // Inicialização
+    renderAll();
+    startRealtimeListener();
+  </script>
+</body>
+</html>
